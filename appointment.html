@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Schedule an Appointment with BUNA Interiors!</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Josefin+Sans:wght@300;400;600;700&family=Maharlika:wght@300;400;500;600;700&display=swap">
+  <link rel="stylesheet" href="Assets/css/style.css" type="text/css">
+</head>
+<body>	
+    <div class="container">
+      <div class="navbar">
+          <div class="logo">
+              <img src="Assets/Images/logo.png" width="150px">
+          </div>
+      </div>
+      <h1>Schedule an Appointment With Us At A Discounted Price!</h1>
+      <form id="appointment-form" action="submit.php" method="POST">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+  
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+  
+        <label for="date">Date:</label>
+        <input type="date" id="date" name="date" required onchange="updateAvailableTimes()">
+  
+        <label for="time">Time:</label>
+        <select id="time" name="time" required>
+            <option value="10:00 AM">10:00 AM</option>
+            <option value="11:00 AM">11:00 AM</option>
+            <option value="12:00 PM">12:00 PM</option>
+            <option value="1:00 PM">1:00 PM</option>
+            <option value="2:00 PM">2:00 PM</option>
+            <option value="3:00 PM">3:00 PM</option>
+            <option value="4:00 PM">4:00 PM</option>
+            <option value="5:00 PM">5:00 PM</option>
+            
+        </select>
+        <label for="Location">Location:</label>
+      <input type="text" id="location" name="Location" required>
+
+      <button type="submit" name="bookButton">Schedule Appointment</button>
+
+    <script>
+        const datePicker = document.getElementById('date');
+        const timeSelect = document.getElementById('time');
+        const bookButton = document.getElementById('bookButton');
+
+        function updateAvailableTimes() {
+            // Clear previous options
+            timeSelect.innerHTML = '';
+
+            // Get the selected date
+            const selectedDate = new Date(datePicker.value);
+
+            // Determine the day of the week (0 = Sunday, 6 = Saturday)
+            const dayOfWeek = selectedDate.getDay();
+
+            // Define available times based on the day
+            const availableTimes = {
+                0: ['Appointments are not available on this day. Please select another day.'], // Sunday (no appointments)
+                1: ['10:00 AM', '11:00 AM', '12:00 PM', '1:00 PM', '2:00 PM', '3:00 PM'], // Monday
+                2: ['3:00 PM', '4:00 PM', '5:00 PM'], // Tuesday
+                3: ['Appointments are not available on this day. Please select another day.'], // Wednesday (no appointments)
+                4: ['10:00 AM', '11:00 AM', '12:00 PM', '1:00 PM', '2:00 PM', '3:00 PM'], // Thursday
+                5: ['3:00 PM', '4:00 PM', '5:00 PM'], // Friday
+                6: ['10:00 AM', '11:00 AM', '12:00 PM'], // Saturday
+            };
+
+            // Add available times as options
+            availableTimes[dayOfWeek].forEach(time => {
+                const option = document.createElement('option');
+                option.value = time;
+                option.text = time;
+                timeSelect.appendChild(option);
+            });
+        }
+
+        // Update available times initially and on date change
+        updateAvailableTimes();
+        function checkAvailabilityAndBook() {
+            const selectedDate = new Date(datePicker.value).toISOString().slice(0, 10); // Format date (YYYY-MM-DD)
+            const bookedCount = getBookedAppointmentsCount(selectedDate);
+
+            if (bookedCount >= 2) {
+                alert('Sorry, we are fully booked on this day. Please choose another date.');
+            } else {
+                alert('Appointment booked successfully! Check your email for details.');
+                // Simulate form submission (replace with your logic)
+                document.getElementById('appointment-form').submit(); // Assuming you have a form with id "appointment-form"
+            }
+        }
+
+        // Add event listener to book button
+        bookButton.addEventListener('click', checkAvailabilityAndBook);
+       
+
+    </script>
+
+
