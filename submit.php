@@ -27,17 +27,18 @@ if (!$stmt) {
 // Validate and sanitize user input
 $name = filter_var($_POST["name"], FILTER_SANITIZE_STRING);
 $email = filter_var($_POST["email"], FILTER_SANITIZE_EMAIL);
+$number = filter_var($_POST["number"], FILTER_SANITIZE_NUMBER_INT);
 $date = filter_var($_POST["date"], FILTER_SANITIZE_STRING);
 $time = filter_var($_POST["time"], FILTER_SANITIZE_STRING);
 $location = filter_var($_POST["Location"], FILTER_SANITIZE_STRING);
 
-if (!$name || !$email || !$date || !$time || !$location) {
+if (!$name || !$email || !$number || !$date || !$time || !$location) {
   echo "Error: All fields are required.";
   exit();
 }
 
 // Bind parameters to prevent SQL injection
-$stmt->bind_param("sssss", $name, $email, $date, $time, $location);
+$stmt->bind_param("sssss", $name, $email, $number, $date, $time, $location);
 
 if (!$stmt->execute()) {
   echo "Error inserting data: " . $stmt->error;
