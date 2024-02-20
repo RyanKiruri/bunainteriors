@@ -18,21 +18,58 @@
                     <ul id="MenuItems">
                         <li><a href="index.html">Home</a></li>
                         <li><a href="appointment.html">Book Appointment</a></li>
-                        <li><a href="">About Us</a></li>
-                        <li><a href="">Contact</a></li>
+                        <li><a href=mailto:bunainteriors@gmail.com>Contact Us</a></li>
                     </ul>
                 </nav>
+                <img src="Assets/Images/menu.png" class="menu-icon" onclick="menutoggle()">
                 </div>
         </div>
         <div class="row">
             <div class="col-2">
                 <h1>Want Your Interior Designed Professionally?<br>We Have The Solution.</h1>
-                <p>At Buna Interiors, we value your aesthetic, which is why we<br>offer a variety of services to suit your needs. Allow us<br>to bring your dream to life by offering the best prices on the market.</p>
+                <p>At Buna Interiors, we value your aesthetic, which is why we<br>offer a variety of services to suit your needs. Allow us<br>to bring your dreams to life by offering the best prices on the market.</p>
                 <a href="appointment.html" class="btn">Schedule Now!&#8594</a>
             </div>
             <div class="col-2">
                 <img src="Assets/Images/interiordesign.png">
             </div>
     </div>
+    <div class="footer">
+		<div class="container">
+			<div class="row">
+				<div class="footer-col-1">
+					<h3>Schedule your appointment now and get a discount!</h3>
+					<p>Starting March 25th, book an appointment with us and get up to a 15% discount!</p>
+				</div>
+				<div class="footer-col-2">
+					<img src="Assets/Images/logo.png">
+					<p>Allow us to bring your dreams to life by offering the best prices on the market.</p>
+				</div>
+				
+				<div class="footer-col-4">
+					<h3>Follow Us</h3>
+					<a href="https://www.instagram.com/bunainteriors/?img_index=1"><img src="Assets/Images/instagram.png"></a>
+				</div>
+			</div>
+		</div>
+		<hr>
+		<p class="copyright">Copyright 2024 - Buna Interiors</p>
+	</div>
+    <script type="text/javascript">
+        var MenuItems = document.getElementById("MenuItems");
     
+        MenuItems.style.maxHeight = "0px";
+    
+        function menutoggle() {
+            if (MenuItems.style.maxHeight == "0px")
+            {
+                MenuItems.style.maxHeight = "200px";
+            }
+            else
+            {
+                MenuItems.style.maxHeight = "0px";
+            }
+        }
+    </script>
 </body>
+</html>
