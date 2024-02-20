@@ -1,9 +1,10 @@
 <?php
 
+require 'vendor/autoload.php';
 // Database connection details (replace with your actual credentials)
-$DB_HOST = "bunainteriors";
-$DB_USERNAME = "NatalieGrace";
-$DB_PASSWORD = "F81/D4IHDlkL5*K@ ";
+$DB_HOST = "localhost";
+$DB_USERNAME = "root";
+$DB_PASSWORD = "";
 $DB_NAME = "buna_interiors";
 
 // Create connection
