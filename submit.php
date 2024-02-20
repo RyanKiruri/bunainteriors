@@ -1,9 +1,9 @@
 <?php
 
 // Database connection details (replace with your actual credentials)
-$DB_HOST = "localhost";
-$DB_USERNAME = "root";
-$DB_PASSWORD = " ";
+$DB_HOST = "bunainteriors";
+$DB_USERNAME = "NatalieGrace";
+$DB_PASSWORD = "F81/D4IHDlkL5*K@ ";
 $DB_NAME = "buna_interiors";
 
 // Create connection
@@ -12,10 +12,10 @@ $conn = new mysqli($DB_HOST, $DB_USERNAME, $DB_PASSWORD, $DB_NAME);
 // Check connection
 if ($conn->connect_error) {
   die("Connection failed: " . $conn->connect_error);
-}
+}else {
 
 // Prepare statement for insertion (replace table name if needed)
-$sql = "INSERT INTO appointments (name, email, date, time, location) VALUES (?, ?, ?, ?, ?)";
+$sql = "INSERT INTO appointments (name, email, number, date, time, location) VALUES (?, ?, ?, ?, ?, ?)";
 
 $stmt = $conn->prepare($sql);
 
@@ -38,7 +38,7 @@ if (!$name || !$email || !$number || !$date || !$time || !$location) {
 }
 
 // Bind parameters to prevent SQL injection
-$stmt->bind_param("sssss", $name, $email, $number, $date, $time, $location);
+$stmt->bind_param("ssisss", $name, $email, $number, $date, $time, $location);
 
 if (!$stmt->execute()) {
   echo "Error inserting data: " . $stmt->error;
@@ -73,3 +73,5 @@ if (!$mail->send()) {
 } else {
   echo "Appointment booked successfully! Check your email for details.";
 }
+}
+?>
