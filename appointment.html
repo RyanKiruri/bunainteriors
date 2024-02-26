@@ -7,121 +7,82 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Josefin+Sans:wght@300;400;600;700&family=Maharlika:wght@300;400;500;600;700&display=swap">
   <link rel="stylesheet" href="Assets/css/style.css" type="text/css">
 </head>
-<body>	
-    <div class="container">
-      <div class="navbar">
-          <div class="logo">
-              <img src="Assets/Images/logo.png" width="150px">
-          </div>
+<body>
+  <div class="container">
+    <div class="navbar">
+      <div class="logo">
+        <img src="Assets/Images/logo.png" width="150px">
       </div>
-      <h1>Schedule an Appointment With Us At A Discounted Price!</h1>
-      <form id="appointment-form" action="http://localhost:27017/submit" method="POST">
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name" required>
-  
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required>
+    </div>
+    <h1>Schedule an Appointment With Us At A Discounted Price!</h1>
+    <form id="appointment-form" action="https://bunainteriors-d2a39.firebaseio.com/appointments" method="POST">
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" required>
 
-        <label for="number">Phone No:</label>
-        <input type="number" id="number" name="number" required>
-  
-        <label for="date">Date:</label>
-        <input type="date" id="date" name="date" required onchange="updateAvailableTimes()">
-  
-        <label for="time">Time:</label>
-        <select id="time" name="time" required>
-            <option value="10:00 AM">10:00 AM</option>
-            <option value="11:00 AM">11:00 AM</option>
-            <option value="12:00 PM">12:00 PM</option>
-            <option value="1:00 PM">1:00 PM</option>
-            <option value="2:00 PM">2:00 PM</option>
-            <option value="3:00 PM">3:00 PM</option>
-            <option value="4:00 PM">4:00 PM</option>
-            <option value="5:00 PM">5:00 PM</option>
-            
-        </select>
-        <label for="Location">Location:</label>
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" required>
+
+      <label for="number">Phone No:</label>
+      <input type="number" id="number" name="number" required>
+
+      <label for="date">Date:</label>
+      <input type="date" id="date" name="date" required onchange="updateAvailableTimes()">
+
+      <label for="time">Time:</label>
+      <select id="time" name="time" required>
+        <option value="10:00 AM">10:00 AM</option>
+        <option value="11:00 AM">11:00 AM</option>
+        <option value="12:00 PM">12:00 PM</option>
+        <option value="1:00 PM">1:00 PM</option>
+        <option value="2:00 PM">2:00 PM</option>
+        <option value="3:00 PM">3:00 PM</option>
+        <option value="4:00 PM">4:00 PM</option>
+        <option value="5:00 PM">5:00 PM</option>
+      </select>
+      <label for="Location">Location:</label>
       <input type="text" id="location" name="location" required>
 
       <button type="submit" name="bookButton">Schedule Appointment</button>
+    </form>
+
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js"></script>
 
     <script>
-        const datePicker = document.getElementById('date');
-        const timeSelect = document.getElementById('time');
-        const bookButton = document.getElementById('bookButton');
+      const datePicker = document.getElementById('date');
+      const timeSelect = document.getElementById('time');
+      const bookButton = document.getElementById('bookButton');
 
-        function updateAvailableTimes() {
-            // Clear previous options
-            timeSelect.innerHTML = '';
+      function updateAvailableTimes() {
+        // Clear previous options, update functions can be added here for time slot logic.
+        timeSelect.innerHTML = '';
 
-            // Get the selected date
-            const selectedDate = new Date(datePicker.value);
+        // Get the selected date
+        const selectedDate = new Date(datePicker.value);
 
-            // Determine the day of the week (0 = Sunday, 6 = Saturday)
-            const dayOfWeek = selectedDate.getDay();
+        // Determine the day of the week (0 = Sunday, 6 = Saturday)
+        const dayOfWeek = selectedDate.getDay();
+      }
 
-            // Define available times based on the day
-            const availableTimes = {
-                0: ['Appointments are not available on this day. Please select another day.'], // Sunday (no appointments)
-                1: ['10:00 AM', '11:00 AM', '12:00 PM', '1:00 PM', '2:00 PM', '3:00 PM'], // Monday
-                2: ['3:00 PM', '4:00 PM', '5:00 PM'], // Tuesday
-                3: ['Appointments are not available on this day. Please select another day.'], // Wednesday (no appointments)
-                4: ['10:00 AM', '11:00 AM', '12:00 PM', '1:00 PM', '2:00 PM', '3:00 PM'], // Thursday
-                5: ['3:00 PM', '4:00 PM', '5:00 PM'], // Friday
-                6: ['10:00 AM', '11:00 AM', '12:00 PM'], // Saturday
-            };
+      // Update available times initially and on date change
+      updateAvailableTimes();
 
-            // Add available times as options
-            availableTimes[dayOfWeek].forEach(time => {
-                const option = document.createElement('option');
-                option.value = time;
-                option.text = time;
-                timeSelect.appendChild(option);
-            });
-        }
+      function submitAppointment() {
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const number = document.getElementById('number').value;
+        const date = document.getElementById('date').value;
+        const time = document.getElementById('time').value;
+        const location = document.getElementById('location').value;
 
-        // Update available times initially and on date change
-        updateAvailableTimes();
-       
+        // Prepare data object
+        const appointmentData = {
+          name,
+          email,
+          number,
+          date,
+          time,
+          location,
+        };
 
-        // Add event listener to book button
-        bookButton.addEventListener('click', checkAvailabilityAndBook);
-
-        function submitAppointment() {
-  const name = document.getElementById('name').value;
-  const email = document.getElementById('email').value;
-  const number = document.getElementById('number').value;
-  const date = document.getElementById('date').value;
-  const time = document.getElementById('time').value;
-  const location = document.getElementById('location').value;
-
-  // Prepare data to send
-  const data = { name, email, number, date, time, location };
-
-  // Send POST request to server
-  fetch('http://localhost:27017/submit', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data)
-  })
-  .then(response => {
-    if (response.ok) {
-      alert('Appointment booked successfully! Check your email for details.');
-    } else {
-      console.error('Error submitting appointment:', response.statusText);
-      // Handle errors from the server
-    }
-  })
-  .catch(err => {
-    console.error('Error sending request:', err);
-  });
-}
-
-// Add event listener to submit button
-bookButton.addEventListener('click', submitAppointment);
-
-       
-
-    </script>
-
-
+        
