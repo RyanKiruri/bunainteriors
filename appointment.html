@@ -15,7 +15,7 @@
           </div>
       </div>
       <h1>Schedule an Appointment With Us At A Discounted Price!</h1>
-      <form id="appointment-form" action="submit.php" method="POST">
+      <form id="appointment-form" action="http://localhost:27017/submit" method="POST">
         <label for="name">Name:</label>
         <input type="text" id="name" name="name" required>
   
@@ -41,7 +41,7 @@
             
         </select>
         <label for="Location">Location:</label>
-      <input type="text" id="location" name="Location" required>
+      <input type="text" id="location" name="location" required>
 
       <button type="submit" name="bookButton">Schedule Appointment</button>
 
@@ -82,21 +82,44 @@
 
         // Update available times initially and on date change
         updateAvailableTimes();
-        function checkAvailabilityAndBook() {
-            const selectedDate = new Date(datePicker.value).toISOString().slice(0, 10); // Format date (YYYY-MM-DD)
-            const bookedCount = getBookedAppointmentsCount(selectedDate);
-
-            if (bookedCount >= 2) {
-                alert('Sorry, we are fully booked on this day. Please choose another date.');
-            } else {
-                alert('Appointment booked successfully! Check your email for details.');
-                // Simulate form submission (replace with your logic)
-                document.getElementById('appointment-form').submit(); // Assuming you have a form with id "appointment-form"
-            }
-        }
+       
 
         // Add event listener to book button
         bookButton.addEventListener('click', checkAvailabilityAndBook);
+
+        function submitAppointment() {
+  const name = document.getElementById('name').value;
+  const email = document.getElementById('email').value;
+  const number = document.getElementById('number').value;
+  const date = document.getElementById('date').value;
+  const time = document.getElementById('time').value;
+  const location = document.getElementById('location').value;
+
+  // Prepare data to send
+  const data = { name, email, number, date, time, location };
+
+  // Send POST request to server
+  fetch('http://localhost:27017/submit', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  })
+  .then(response => {
+    if (response.ok) {
+      alert('Appointment booked successfully! Check your email for details.');
+    } else {
+      console.error('Error submitting appointment:', response.statusText);
+      // Handle errors from the server
+    }
+  })
+  .catch(err => {
+    console.error('Error sending request:', err);
+  });
+}
+
+// Add event listener to submit button
+bookButton.addEventListener('click', submitAppointment);
+
        
 
     </script>
